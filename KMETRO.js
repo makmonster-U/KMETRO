@@ -1,6 +1,7 @@
 
 var countboom = 0
 var stop = 0
+var hh = 1
 
 //-----방생성-----/
 
@@ -46,7 +47,7 @@ room1.locateObject(room1.keypad,592.5,340)
 room1.keypad.setWidth(20)
 
 //room2
-room2.handle = room2.createObject("handle","손잡이.png")
+room2.handle = room2.createObject("handle","손잡이투.png")
 room2.locateObject(room2.handle,998,355)
 
 room2.underdesk = room2.createObject("underdesk","underdesk.png")
@@ -73,16 +74,18 @@ room3.extinguisher.setWidth(120)
 room3.arrow = room3.createObject("arrow","뒤로가기.png")
 room3.locateObject(room3.arrow,640,600)
 room3.arrow.setWidth(60)
-//---함수---//
 
+room3.safe = room3.createObject("safe","금고.png")
+room3.locateObject(room3.safe,680,410)
+room3.safe.setWidth(220)
+room3.safe.lock()
 
-/*
-function Bloodstain(room,name,image) {
-  this.room = room
-  this.name = name
-  this.image = image
-}
-*/
+room3.handle1 = room3.createObject("handle1","손잡이.png")
+room3.locateObject(room3.handle1,680,415)
+room3.handle1.hide()
+
+  //---함수---//
+
 //room1
 room1.uv.onClick = function() {
   room1.uv.pick()
@@ -160,6 +163,20 @@ room2.arrow.onClick = function() {
   game.move(room1)
 }
 
+room2.handle.onClick = function() {
+  if(hh)  {
+    if (game.getHandItem() == room3.handle1) {
+      printMessage("손잡이를 끼웠다.")
+      room2.handle.setSprite("손잡이.png")
+      hh = 0
+    } else {
+      printMessage("손잡이가 사라졌다.")
+    }
+  } else {
+    printMessage("전철이 멈췄다!")
+    room2.locateObject(room2.handle,950,355)
+  }
+}
 //room3
 
 room3.extinguisher.onClick = function() {
@@ -177,26 +194,26 @@ room3.poem.onClick = function() {
 room3.arrow.onClick = function() {
   game.move(room2)
 }
-/*
-room1_door.door = room.createObject("door1", "문-오른쪽-닫힘.png") // 문 생성
-room.door.setWidth(136) // 크기 조절
-room.locateObject(room.door, 1049, 300) // 문 배치
-room.door.onClick = function() { // door를 클릭했을 때
-	if(room.door.isClosed()){ // door가 closed 상태이면
-		room.door.open() // door의 상태를 open으로 바꿈
-	} else if (room.door.isOpened()){ // door가 opened 상태이면
-		game.clear() // 게임 클리어
-	} else {
-		// 아무것도 하지 않는다
-	}
+
+room3.safe.onClick = function() {
+  if (room3.safe.isLocked()) {
+    showKeypad("telephone","3728",function(){
+      printMessage("덜컹")
+      room3.safe.unlock()
+      room3.safe.open()
+      room3.safe.setSprite("금고열.png")
+      room3.handle1.show()
+    })
+  }
+}
+
+room3.handle1.onClick = function() {
+  room3.handle1.pick()
 }
 
 room.door.onOpen = function() { // door 상태가 open으로 변경되면 실행
 	room.door.setSprite("문-오른쪽-열림.png") // 열린 문으로 변경
 }
-
-*/
-
 
 //---------------------------게임 초기화-----------------------/-----------/
 game.start(room1) // 게임시작
