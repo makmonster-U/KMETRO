@@ -2,6 +2,7 @@
 var countboom = 0
 var stop = 0
 var hh = 1
+var jump = 0
 
 //-----방생성-----/
 
@@ -61,6 +62,11 @@ room2.window.setWidth(300)
 room2.arrow = room2.createObject("arrow","왼.png")
 room2.locateObject(room2.arrow,50,360)
 room2.arrow.setWidth(60)
+
+room2.broken = room2.createObject("broken","깨짐.png")
+room2.locateObject(room2.broken,390,60)
+room2.broken.setWidth(230)
+room2.broken.hide()
 
 //room3
 room3.poem = room3.createObject("poem","별헤는밤.jpg")
@@ -145,17 +151,29 @@ room2.window.onClick = function() {
       countboom = countboom + 1
     } else{
       printMessage("창문이 깨졌다")
+      room2.broken.show()
       }
   } else{
-    if(countboom < 2){
       if(stop){
         printMessage("얇은 유리창이다.")
       } else{
         printMessage("얇은 유리창 너머로 풍경이 지나간다.")
       }
-    } else{
-      printMessage("창문이 깨졌다")
-      }
+  }
+}
+
+room2.broken.onClick = function() {
+  jump = jump +1
+  if(jump<2){
+    printMessage("뛰어내릴까? 창문을 한번 더 누르면 뛰어내린다.")
+  } else {
+    if (stop) {
+      printMessage("깨진 유리에 긁혀 상처를 입었지만, 무사히 탈출했다.")
+      game.clear()
+    } else {
+      printMessage("전철의 속도가 너무 빨라 뛰어내릴 때 충격으로 사망했다.")
+      game.gameover()
+    }
   }
 }
 
@@ -175,6 +193,7 @@ room2.handle.onClick = function() {
   } else {
     printMessage("전철이 멈췄다!")
     room2.locateObject(room2.handle,950,355)
+    stop =1
   }
 }
 //room3
@@ -211,11 +230,8 @@ room3.handle1.onClick = function() {
   room3.handle1.pick()
 }
 
-room.door.onOpen = function() { // door 상태가 open으로 변경되면 실행
-	room.door.setSprite("문-오른쪽-열림.png") // 열린 문으로 변경
-}
 
 //---------------------------게임 초기화-----------------------/-----------/
 game.start(room1) // 게임시작
 printMessage("방탈출에 오신 것을 환영합니다!") // 환영 메시지 출력
-game.move(room2)
+//game.move(room2)
