@@ -192,6 +192,7 @@ room2.handle.onClick = function() {
     }
   } else {
     printMessage("전철이 멈췄다!")
+    playSound("정적.wav")
     room2.locateObject(room2.handle,950,355)
     stop =1
   }
@@ -231,7 +232,8 @@ room3.handle1.onClick = function() {
 }
 
 
-//---------------------------게임 초기화-----------------------/-----------/
+//---------------------------게임 초기화-----------------------//
+playSound("지하철내부.wav")
 game.start(room1) // 게임시작
 printMessage("방탈출에 오신 것을 환영합니다!") // 환영 메시지 출력
 //game.move(room2)
