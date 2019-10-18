@@ -68,6 +68,11 @@ room2.locateObject(room2.broken,390,60)
 room2.broken.setWidth(230)
 room2.broken.hide()
 
+room2.door1 = room2.createObject("door1","방2문.png")
+room2.locateObject(room2.door1,400,300)
+room2.door1.setWidth(300)
+room2.door1.lock()
+
 //room3
 room3.poem = room3.createObject("poem","별헤는밤.jpg")
 room3.poem.setWidth(50)
@@ -81,6 +86,10 @@ room3.arrow = room3.createObject("arrow","뒤로가기.png")
 room3.locateObject(room3.arrow,640,600)
 room3.arrow.setWidth(60)
 
+room3.starkey = room3.createObject("starkey","별키패드.png")
+room3.locateObject(room3.starkey,620,370)
+room3.starkey.setWidth(90)
+
 room3.safe = room3.createObject("safe","금고.png")
 room3.locateObject(room3.safe,680,410)
 room3.safe.setWidth(220)
@@ -89,6 +98,7 @@ room3.safe.lock()
 room3.handle1 = room3.createObject("handle1","손잡이.png")
 room3.locateObject(room3.handle1,680,415)
 room3.handle1.hide()
+
 
   //---함수---//
 
@@ -197,6 +207,14 @@ room2.handle.onClick = function() {
     stop =1
   }
 }
+
+room2.door1.onClick = function() {
+  if(room2.door1.isLocked()){
+    printMessage("문이 잠겼다.")
+  } else {
+    printMessage("문이 열렸다.")
+  }
+}
 //room3
 
 room3.extinguisher.onClick = function() {
@@ -231,7 +249,18 @@ room3.handle1.onClick = function() {
   room3.handle1.pick()
 }
 
+room3.safe.onDrag = function(direction) {
+  if(direction == "Right"){
+    room3.safe.moveX(70)
+  }
+}
 
+room3.starkey.onClick = function() {
+  showKeypad("number", "5125", function(){
+    printMessage("문의 잠금장치가 열리는 소리가 들렸다.")
+    room2.door1.unlock()
+  })
+}
 //---------------------------게임 초기화-----------------------//
 playSound("지하철내부.wav")
 game.start(room1) // 게임시작
