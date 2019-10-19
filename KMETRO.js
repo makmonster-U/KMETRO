@@ -4,6 +4,7 @@ var stop = 0
 var hh = 1
 var jump = 0
 var timerNcheck = 1
+var dragNcheck = 1
 
 //-----방생성-----/
 
@@ -264,7 +265,10 @@ room3.handle1.onClick = function() {
 
 room3.safe.onDrag = function(direction) {
   if(direction == "Right"){
-    room3.safe.moveX(70)
+    if (dragNcheck) {
+      room3.safe.moveX(70)
+      dragNcheck = 0
+    }
   }
 }
 
