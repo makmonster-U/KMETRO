@@ -3,6 +3,7 @@ var countboom = 0
 var stop = 0
 var hh = 1
 var jump = 0
+var timerNcheck = 1
 
 //-----방생성-----/
 
@@ -145,6 +146,12 @@ room1.door.onClick = function() {
     room1.door.open()
   } else{
     game.move(room2)
+    if(timerNcheck){
+      game.setTimer(300,1,"sec")
+      game.showTimer()
+      printMessage("살인마가 오기 전에 탈출해라!")
+      timerNcheck = 0
+    }
   }
 }
 
@@ -212,7 +219,13 @@ room2.door1.onClick = function() {
   if(room2.door1.isLocked()){
     printMessage("문이 잠겼다.")
   } else {
-    printMessage("문이 열렸다.")
+    if (stop) {
+      printMessage("무사히 탈출했다.")
+      game.clear()
+    } else {
+      printMessage("전철의 속도가 너무 빨라 뛰어내릴 때 충격으로 사망했다.")
+      game.gameover()
+    }
   }
 }
 //room3
@@ -256,7 +269,7 @@ room3.safe.onDrag = function(direction) {
 }
 
 room3.starkey.onClick = function() {
-  showKeypad("number", "5125", function(){
+  showKeypad("number", "5185", function(){
     printMessage("문의 잠금장치가 열리는 소리가 들렸다.")
     room2.door1.unlock()
   })
